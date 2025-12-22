@@ -60,19 +60,27 @@ documents:                    # 必需：文档对象数组
 
 ## 示例
 
-### 简单扁平结构
+### 简单扁平结构（小型项目）
 ```yaml
 project:
-  title: "API 文档"
-  description: "REST API 参考和指南"
+  title: "简单 API 服务"
+  description: "轻量级 REST API 参考和指南"
 
 documents:
   - title: "概述"
-    description: "API 介绍和快速开始"
+    description: "API 介绍和核心概念"
     path: "/overview.md"
     sourcePaths:
       - "README.md"
     icon: "lucide:home"
+
+  - title: "快速开始"
+    description: "安装、配置和第一个请求"
+    path: "/getting-started.md"
+    sourcePaths:
+      - "docs/installation.md"
+      - "docs/quickstart.md"
+    icon: "lucide:rocket"
 
   - title: "身份验证"
     description: "API 身份验证方法"
@@ -83,46 +91,111 @@ documents:
     icon: "lucide:key"
 ```
 
-### 层次化结构
+### 适度嵌套（中型项目）
 ```yaml
 project:
-  title: "产品指南"
-  description: "完整的产品文档"
+  title: "Web 开发框架"
+  description: "全功能 Web 框架文档"
 
 documents:
+  - title: "概述"
+    description: "框架介绍、核心概念和设计理念"
+    path: "/overview.md"
+    sourcePaths:
+      - "README.md"
+      - "docs/philosophy.md"
+    icon: "lucide:home"
+
   - title: "快速开始"
-    description: "安装和设置"
+    description: "安装、Hello World 和基础配置"
     path: "/getting-started.md"
     sourcePaths:
       - "docs/installation.md"
+      - "docs/tutorial.md"
     icon: "lucide:rocket"
-    children:
-      - title: "安装"
-        description: "安装产品"
-        path: "/getting-started/installation.md"
-        sourcePaths:
-          - "docs/install-guide.md"
 
-      - title: "配置"
-        description: "配置设置"
-        path: "/getting-started/config.md"
+  - title: "核心功能"
+    description: "框架核心功能模块详解"
+    path: "/core-features.md"
+    sourcePaths:
+      - "src/core/"
+    icon: "lucide:box"
+    children:
+      # ✅ 合理拆分 - 每个模块都是独立的功能系统
+      - title: "路由系统"
+        description: "URL 路由、路由匹配、中间件和路由组"
+        path: "/core-features/routing.md"
         sourcePaths:
-          - "config/default.yaml"
-          - "docs/config-guide.md"
+          - "src/routing/"
+          - "docs/routing.md"
+
+      - title: "数据库 ORM"
+        description: "模型定义、查询构建、关系和迁移"
+        path: "/core-features/database.md"
+        sourcePaths:
+          - "src/database/"
+          - "docs/database.md"
+
+  - title: "部署指南"
+    description: "生产环境部署和性能优化"
+    path: "/deployment.md"
+    sourcePaths:
+      - "docs/deployment.md"
+    icon: "lucide:server"
+```
+
+### 深度嵌套（大型项目）
+
+**⚠️ 注意：** 仅在父主题内容确实丰富（5+ 章节）且子文档完全独立时才使用嵌套结构。
+
+```yaml
+project:
+  title: "企业级 API 平台"
+  description: "大型 API 平台文档"
+
+documents:
+  - title: "快速开始"
+    description: "5 分钟快速入门：安装、首次调用、基础配置"
+    path: "/getting-started.md"
+    sourcePaths:
+      - "docs/installation.md"
+      - "docs/quickstart.md"
+    icon: "lucide:rocket"
+    # ✅ 不拆分子文档 - 用户需要顺序完成这些步骤
 
   - title: "API 参考"
-    description: "完整的 API 文档"
+    description: "完整的 API 端点文档（100+ 端点）"
     path: "/api.md"
     sourcePaths:
       - "src/api/"
     icon: "lucide:code"
+    children:
+      # ✅ 合理拆分 - 每个类别有 20+ 个端点
+      - title: "用户管理 API"
+        description: "用户认证、权限、配置相关的 25+ 端点"
+        path: "/api/users.md"
+        sourcePaths:
+          - "src/api/users/"
+          - "src/api/auth/"
+
+      - title: "数据操作 API"
+        description: "数据创建、查询、更新、删除的 30+ 端点"
+        path: "/api/data.md"
+        sourcePaths:
+          - "src/api/data/"
 ```
 
 ## 最佳实践
 
-1. **逻辑层次**：在父主题下组织相关文档
-2. **清晰路径**：使用与文档标题匹配的描述性路径名称
-3. **相关源文件**：包含所有为文档内容提供信息的文件
-4. **合适的图标**：选择代表文档用途的图标
-5. **平衡结构**：避免嵌套过深（建议最多 2-3 层）
-6. **一致的描述**：保持描述简洁但信息丰富
+1. **因项目制宜**：根据项目规模和内容复杂度选择合适的结构
+   - 小型项目（< 8 模块）：扁平结构
+   - 中型项目（9-18 模块）：1 层嵌套
+   - 大型项目（18+ 模块）：最多 2 层嵌套
+2. **合理嵌套**：内容丰富且独立的模块可以创建子文档
+3. **避免内容重复**：如果子文档之间有重复内容，应该合并
+4. **逻辑层次**：在父主题下组织相关文档
+5. **清晰路径**：使用与文档标题匹配的描述性路径名称
+6. **相关源文件**：包含所有为文档内容提供信息的文件
+7. **合适的图标**：选择代表文档用途的图标
+8. **控制深度**：避免嵌套过深（建议最多 2 层）
+9. **一致的描述**：保持描述简洁但信息丰富
