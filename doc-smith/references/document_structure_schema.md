@@ -60,142 +60,80 @@ documents:                    # 必需：文档对象数组
 
 ## 示例
 
-### 简单扁平结构（小型项目）
+基本的 YAML 结构示例：
+
+### 扁平结构示例
 ```yaml
 project:
-  title: "简单 API 服务"
-  description: "轻量级 REST API 参考和指南"
+  title: "项目名称"
+  description: "项目简要描述"
 
 documents:
   - title: "概述"
-    description: "API 介绍和核心概念"
+    description: "项目介绍和核心概念"
     path: "/overview.md"
     sourcePaths:
       - "README.md"
     icon: "lucide:home"
 
   - title: "快速开始"
-    description: "安装、配置和第一个请求"
+    description: "安装、配置和第一个示例"
     path: "/getting-started.md"
     sourcePaths:
       - "docs/installation.md"
-      - "docs/quickstart.md"
     icon: "lucide:rocket"
-
-  - title: "身份验证"
-    description: "API 身份验证方法"
-    path: "/auth.md"
-    sourcePaths:
-      - "src/auth/README.md"
-      - "src/auth/oauth.py"
-    icon: "lucide:key"
-```
-
-### 适度嵌套（中型项目）
-```yaml
-project:
-  title: "Web 开发框架"
-  description: "全功能 Web 框架文档"
-
-documents:
-  - title: "概述"
-    description: "框架介绍、核心概念和设计理念"
-    path: "/overview.md"
-    sourcePaths:
-      - "README.md"
-      - "docs/philosophy.md"
-    icon: "lucide:home"
-
-  - title: "快速开始"
-    description: "安装、Hello World 和基础配置"
-    path: "/getting-started.md"
-    sourcePaths:
-      - "docs/installation.md"
-      - "docs/tutorial.md"
-    icon: "lucide:rocket"
-
-  - title: "核心功能"
-    description: "框架核心功能模块详解"
-    path: "/core-features.md"
-    sourcePaths:
-      - "src/core/"
-    icon: "lucide:box"
-    children:
-      # ✅ 合理拆分 - 每个模块都是独立的功能系统
-      - title: "路由系统"
-        description: "URL 路由、路由匹配、中间件和路由组"
-        path: "/core-features/routing.md"
-        sourcePaths:
-          - "src/routing/"
-          - "docs/routing.md"
-
-      - title: "数据库 ORM"
-        description: "模型定义、查询构建、关系和迁移"
-        path: "/core-features/database.md"
-        sourcePaths:
-          - "src/database/"
-          - "docs/database.md"
-
-  - title: "部署指南"
-    description: "生产环境部署和性能优化"
-    path: "/deployment.md"
-    sourcePaths:
-      - "docs/deployment.md"
-    icon: "lucide:server"
-```
-
-### 深度嵌套（大型项目）
-
-**⚠️ 注意：** 仅在父主题内容确实丰富（5+ 章节）且子文档完全独立时才使用嵌套结构。
-
-```yaml
-project:
-  title: "企业级 API 平台"
-  description: "大型 API 平台文档"
-
-documents:
-  - title: "快速开始"
-    description: "5 分钟快速入门：安装、首次调用、基础配置"
-    path: "/getting-started.md"
-    sourcePaths:
-      - "docs/installation.md"
-      - "docs/quickstart.md"
-    icon: "lucide:rocket"
-    # ✅ 不拆分子文档 - 用户需要顺序完成这些步骤
 
   - title: "API 参考"
-    description: "完整的 API 端点文档（100+ 端点）"
+    description: "API 使用说明"
     path: "/api.md"
     sourcePaths:
       - "src/api/"
     icon: "lucide:code"
-    children:
-      # ✅ 合理拆分 - 每个类别有 20+ 个端点
-      - title: "用户管理 API"
-        description: "用户认证、权限、配置相关的 25+ 端点"
-        path: "/api/users.md"
-        sourcePaths:
-          - "src/api/users/"
-          - "src/api/auth/"
-
-      - title: "数据操作 API"
-        description: "数据创建、查询、更新、删除的 30+ 端点"
-        path: "/api/data.md"
-        sourcePaths:
-          - "src/api/data/"
 ```
+
+### 嵌套结构示例
+```yaml
+project:
+  title: "项目名称"
+  description: "项目简要描述"
+
+documents:
+  - title: "概述"
+    description: "项目介绍"
+    path: "/overview.md"
+    sourcePaths:
+      - "README.md"
+    icon: "lucide:home"
+
+  - title: "核心功能"
+    description: "主要功能模块说明"
+    path: "/features.md"
+    sourcePaths:
+      - "src/core/"
+    icon: "lucide:box"
+    children:
+      - title: "子功能 A"
+        description: "子功能详细说明"
+        path: "/features/feature-a.md"
+        sourcePaths:
+          - "src/feature-a/"
+
+      - title: "子功能 B"
+        description: "子功能详细说明"
+        path: "/features/feature-b.md"
+        sourcePaths:
+          - "src/feature-b/"
+```
+
+**注意**：选择扁平还是嵌套结构应基于 SKILL.md 中的判断标准，而非模仿示例。
 
 ## 最佳实践
 
-1. **因项目制宜**：根据项目规模和内容复杂度选择合适的结构
-   - 小型项目（< 8 模块）：扁平结构
-   - 中型项目（9-18 模块）：1 层嵌套
-   - 大型项目（18+ 模块）：最多 2 层嵌套
-2. **合理嵌套**：内容丰富且独立的模块可以创建子文档
-3. **避免内容重复**：如果子文档之间有重复内容，应该合并
-4. **逻辑层次**：在父主题下组织相关文档
-5. **清晰路径**：使用与文档标题匹配的描述性路径名称
-6. **相关源文件**：包含所有为文档内容提供信息的文件
-7. **合适的图标**：选择代表文档用途的图标
-8. **控制深度**：避免嵌套过深（建议最多 2 层）
-9. **一致的描述**：保持描述简洁但信息丰富
+1. **基于实际内容决策**：根据实际的源文件内容量和独立性选择结构，参考 SKILL.md 中的判断标准
+2. **避免内容重复**：如果子文档之间有重复内容，应该合并
+3. **逻辑层次**：在父主题下组织相关文档
+4. **清晰路径**：使用与文档标题匹配的描述性路径名称
+5. **相关源文件**：包含所有为文档内容提供信息的文件
+6. **合适的图标**：选择代表文档用途的图标（仅顶层文档需要）
+7. **控制深度**：避免嵌套过深（建议最多 2 层）
+8. **一致的描述**：保持描述简洁但信息丰富
