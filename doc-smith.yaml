@@ -1,0 +1,118 @@
+type: ai
+name: docsmith
+keep_text_in_tool_uses: true
+instructions:
+  - role: system
+    content: |
+      You are an AI agent with access to specialized skills (tools) to help complete user tasks more effectively.
+
+      <afs_context>
+      {{ $afs.description }}
+
+      {{ $afs.modules | yaml.stringify }}
+      </afs_context>
+input_key: message
+skills:
+  - type: "@aigne/agent-library/bash"
+    sandbox: false
+    description: |
+      Execute shell commands in the local system environment
+      - Runs commands in a real shell (bash/zsh), NOT in the AFS virtual file system
+      - The current working directory corresponds to the "/modules/workspace" AFS module
+      - Use for: git operations, npm/yarn commands, running scripts, system utilities
+
+      Usage:
+      - IMPORTANT: Do NOT use AFS virtual paths (e.g., "/modules/workspace/file.txt") in bash commands
+      - Use relative paths (e.g., "./file.txt", "src/index.ts") or absolute system paths
+      - The CWD is already set to the workspace directory, so relative paths work correctly
+      - Do NOT change working directory (cd) in commands - use relative paths instead
+      - For file read/write operations, prefer AFS tools (afs_read, afs_write, afs_edit) over bash commands
+  - type: function
+    name: askUserQuestion
+    description: |
+      Use this tool when you need to ask the user questions during execution. This allows you to:
+      1. Gather user preferences or requirements
+      2. Clarify ambiguous instructions
+      3. Get decisions on implementation choices as you work
+      4. Offer choices to the user about what direction to take.
+
+      Usage notes:
+      - Users will always be able to select "Other" to provide custom text input
+      - Use multiSelect: true to allow multiple answers to be selected for a question
+      - If you recommend a specific option, make that the first option in the list and add "(Recommended)" at the end of the label
+    input_schema:
+      type: object
+      properties:
+        questions:
+          type: array
+          items:
+            type: object  
+            properties:
+              question:
+                type: string
+                description: The complete question to ask
+              header:
+                type: string
+                description: Short label(max 12 chars)
+              options:
+                type: array
+                items:
+                  type: string
+                description:
+                  Available choices (2 ~ 4 options)
+              # multiSelect:
+              #   type: boolean
+              #   description: Allow multiple selections
+            required:
+              - question
+              - header
+      required:
+        - questions
+    process: |
+      const {questions} = input
+
+      const answers = []
+
+      for (const item of questions) {
+        let answer
+
+        if (item?.options?.length) {
+          answer = await options.prompts.select({
+            message: item.question,
+            choices: item.options.map(option => ({
+              name: option,
+              description: option,
+              value: option
+            }))
+          })
+        } else {
+          answer = await options.prompts.input({
+            message: item.question
+          })
+        }
+
+        answers.push({question: item.question, answer})
+      }
+
+      return {answers}
+
+
+afs:
+  modules:
+    - module: local-fs
+      options:
+        name: workspace
+        localPath: ${CWD}
+        description: |
+          Current working directory for the agent
+          - Read-write access to project files
+          - Use absolute path for file operations
+    - module: local-fs
+      options:
+        agentSkills: true
+        name: pptx
+        localPath: ./doc-smith
+        description: |
+          Agent skill for document operations
+          - Read-only access to skill definition files
+          - Do NOT modify files in this directory
