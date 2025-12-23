@@ -17,19 +17,46 @@ DocSmith 可以帮助你：
 - 教程和示例
 - 产品文档
 
+### 用户意图分析
+
+DocSmith 会自动分析工作区内容，推断：
+- **目标用户** - 文档的主要受众（开发者、运维人员、最终用户等）
+- **使用场景** - 用户查阅文档的情境（首次接触、开发集成、问题排查等）
+- **文档侧重点** - 文档类型（使用指南、API 参考、快速上手、架构说明等）
+
+推断结果会展示给用户确认，支持多轮调整直到满意。
+
+### 结构确认机制
+
+在生成文档前，DocSmith 会展示规划的文档结构：
+- 文档总数和层次关系
+- 每个文档的标题、描述和来源文件
+- 清晰的 emoji 标识便于快速浏览
+
+用户可以：
+- 删除/添加文档
+- 调整层次结构（合并、拆分、调整父子关系）
+- 修改内容范围
+
+只有在用户确认结构后，才会开始生成实际内容。
+
 ## 项目结构
 
 ```
 doc-smith-skill/
-├── doc-smith/              # Skill 主目录
+├── CLAUDE.md              # Claude Code 项目说明
+├── doc-smith/             # Skill 主目录
 │   ├── SKILL.md           # Skill 主文档（中文）
 │   └── references/        # 参考文档
-│       └── document_structure_schema.md  # Schema 文档（中文）
+│       ├── document_structure_schema.md   # 文档结构 Schema
+│       ├── structure_confirmation_guide.md # 结构确认指南
+│       ├── structure_planning_guide.md    # 结构规划指南
+│       └── user_intent_guide.md           # 用户意图指南
 ├── scripts/               # 安装/卸载脚本
-│   ├── install.sh        # 安装脚本
-│   ├── uninstall.sh      # 卸载脚本
-│   └── README.md         # 脚本使用说明
-└── README.md             # 本文件
+│   ├── install.sh         # 安装脚本
+│   ├── uninstall.sh       # 卸载脚本
+│   └── README.md          # 脚本使用说明
+└── README.md              # 本文件
 ```
 
 ## 快速开始
@@ -47,7 +74,7 @@ doc-smith-skill/
 在任何项目中打开 Claude Code，输入：
 
 ```
-/doc-smith
+使用 doc-smith skill 为当前仓库生成文档
 ```
 
 然后根据提示操作，DocSmith 会：
@@ -71,7 +98,11 @@ doc-smith-skill/
 ## 文档说明
 
 - **SKILL.md** - Skill 完整使用指南，包含工作流程、最佳实践等
-- **document_structure_schema.md** - 文档结构 YAML 的完整 Schema 说明
+- **references/**
+  - **document_structure_schema.md** - 文档结构 YAML 的完整 Schema 说明
+  - **structure_planning_guide.md** - 文档结构规划指南
+  - **structure_confirmation_guide.md** - 结构确认流程指南
+  - **user_intent_guide.md** - 用户意图理解指南
 
 所有文档均已翻译为中文，方便理解和编辑。
 
