@@ -3,14 +3,8 @@ name: docsmith
 keep_text_in_tool_uses: true
 instructions:
   - role: system
-    content: |
-      You are an AI agent with access to specialized skills (tools) to help complete user tasks more effectively.
+    url: ./main-system-prompt.md
 
-      <afs_context>
-      {{ $afs.description }}
-
-      {{ $afs.modules | yaml.stringify }}
-      </afs_context>
 input_key: message
 skills:
   - type: "@aigne/agent-library/bash"
@@ -110,7 +104,7 @@ afs:
     - module: local-fs
       options:
         agentSkills: true
-        name: pptx
+        name: doc-smith
         localPath: ./doc-smith
         description: |
           Agent skill for document operations
