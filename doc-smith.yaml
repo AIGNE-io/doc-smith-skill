@@ -1,26 +1,13 @@
 type: ai
 name: docsmith
 keep_text_in_tool_uses: true
+task_render_mode: collapse
 instructions:
   - role: system
     url: ./main-system-prompt.md
 
 input_key: message
 skills:
-  - type: "@aigne/agent-library/bash"
-    sandbox: false
-    description: |
-      Execute shell commands in the local system environment
-      - Runs commands in a real shell (bash/zsh), NOT in the AFS virtual file system
-      - The current working directory corresponds to the "/modules/workspace" AFS module
-      - Use for: git operations, npm/yarn commands, running scripts, system utilities
-
-      Usage:
-      - IMPORTANT: Do NOT use AFS virtual paths (e.g., "/modules/workspace/file.txt") in bash commands
-      - Use relative paths (e.g., "./file.txt", "src/index.ts") or absolute system paths
-      - The CWD is already set to the workspace directory, so relative paths work correctly
-      - Do NOT change working directory (cd) in commands - use relative paths instead
-      - For file read/write operations, prefer AFS tools (afs_read, afs_write, afs_edit) over bash commands
   - type: function
     name: askUserQuestion
     description: |
@@ -31,7 +18,8 @@ skills:
       4. Offer choices to the user about what direction to take.
 
       Usage notes:
-      - Users will always be able to select "Other" to provide custom text input
+      - The system automatically adds an "✏️ Other" option to all questions, allowing users to provide custom text input. DO NOT add your own "Other", "需要调整", or similar options - they will cause duplication.
+      - Only provide the specific action options (e.g., "✅ Confirm"). The "Other" option is handled by the system.
       - Use multiSelect: true to allow multiple answers to be selected for a question
       - If you recommend a specific option, make that the first option in the list and add "(Recommended)" at the end of the label
     input_schema:
@@ -66,6 +54,7 @@ skills:
       const {questions} = input
 
       const answers = []
+      const OTHER_OPTION = '✏️ Other'
 
       for (const item of questions) {
         let answer
@@ -73,12 +62,25 @@ skills:
         if (item?.options?.length) {
           answer = await options.prompts.select({
             message: item.question,
-            choices: item.options.map(option => ({
-              name: option,
-              description: option,
-              value: option
-            }))
+            choices: [
+              ...item.options.map(option => ({
+                name: option,
+                description: option,
+                value: option
+              })),
+              {
+                name: OTHER_OPTION,
+                description: 'Enter your own response',
+                value: OTHER_OPTION
+              }
+            ]
           })
+
+          if (answer === OTHER_OPTION) {
+            answer = await options.prompts.input({
+              message: 'Please enter your response:'
+            })
+          }
         } else {
           answer = await options.prompts.input({
             message: item.question
