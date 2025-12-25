@@ -1,6 +1,6 @@
 # 文档结构 Schema
 
-本参考定义了 `document_structure.yaml` 的完整 schema。
+本参考定义了 `document-structure.yaml` 的完整 schema。
 
 ## 完整的 YAML 结构
 

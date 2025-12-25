@@ -35,7 +35,7 @@
 
 #### 1. 确定文档输出目录
 
-从 `document_structure.yaml` 的文档配置中读取，文档输出目录固定为：`.aigne/doc-smith/docs/`
+从 `document-structure.yaml` 的文档配置中读取，文档输出目录固定为：`.aigne/doc-smith/docs/`
 
 #### 2. 查找所有媒体文件
 

@@ -10,8 +10,8 @@ description: "从工作区数据源生成和更新全面的文档，包括代码
 ## 概述
 
 DocSmith 分析工作区内容（代码、文件、媒体）并生成：
-1. 用户意图描述（`user_intent.md`）
-2. 文档结构计划（`document_structure.yaml`）
+1. 用户意图描述（`user-intent.md`）
+2. 文档结构计划（`document-structure.yaml`）
 3. 按层次组织的 Markdown 文档文件
 
 所有输出都创建在 `.aigne/doc-smith/` 目录中。
@@ -55,7 +55,7 @@ DocSmith 分析工作区内容（代码、文件、媒体）并生成：
 首先检查文档结构文件是否已存在，如果存在执行第 5 步骤 ，向用户问询是否需要修改。
 文档结构规划要求参考： `references\structure-planning-guide.md`
 
-### 4. 生成 document_structure.yaml
+### 4. 生成 document-structure.yaml
 
 文档结构数据结构参考： `references\document-structure-schema.md`
 
@@ -81,8 +81,8 @@ DocSmith 分析工作区内容（代码、文件、媒体）并生成：
 ```
 .aigne/doc-smith/
 ├── output/
-│   ├── user_intent.md             # 用户意图描述
-│   └── document_structure.yaml    # 文档计划
+│   ├── user-intent.md             # 用户意图描述
+│   └── document-structure.yaml    # 文档计划
 └── docs/
     ├── overview.md                # 生成的文档
     ├── getting-started.md
@@ -94,6 +94,6 @@ DocSmith 分析工作区内容（代码、文件、媒体）并生成：
 
 - **参考引用文件**：执行到每个步骤时，如果提供了参考文件，必须先阅读参考文件中的要求
 - **文档内容要求**：执行任何文档相关的生成、更新，都需要参考`references\document-content-guide.md`，确保文档符合要求
-- **基于用户意图**：所有规划和生成都应参考 `user_intent.md`
+- **基于用户意图**：所有规划和生成都应参考 `user-intent.md`
 - **最小必要原则**：只生成用户意图中明确需要的文档
 - **批量执行**：生成文档内容时优先批量执行，缩短执行时间

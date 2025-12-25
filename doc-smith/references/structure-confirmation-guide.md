@@ -71,7 +71,7 @@
 
 ### 反馈类型
 
-1. **删除文档**：从 document_structure.yaml 删除条目，如果是父文档则连同子文档一起删除
+1. **删除文档**：从 document-structure.yaml 删除条目，如果是父文档则连同子文档一起删除
 2. **添加文档**：确定位置、title、description、path、sourcePaths 和 icon（如果是顶层文档）
 3. **调整层次**：合并/拆分子文档，或调整父子关系
 4. **修改内容范围**：更新 description 和 sourcePaths

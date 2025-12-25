@@ -80,7 +80,7 @@ doc-smith-skill/
 然后根据提示操作，DocSmith 会：
 1. 分析你的工作区
 2. 规划文档结构
-3. 生成 `document_structure.yaml`
+3. 生成 `document-structure.yaml`
 4. 创建结构化的 Markdown 文档
 
 ### 3. 查看生成的文档
@@ -90,7 +90,7 @@ doc-smith-skill/
 ```
 .aigne/doc-smith/
 ├── output/
-│   └── document_structure.yaml    # 文档结构定义
+│   └── document-structure.yaml    # 文档结构定义
 └── docs/
     └── [生成的文档文件]
 ```
