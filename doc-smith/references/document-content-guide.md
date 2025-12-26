@@ -13,6 +13,7 @@
 ## 导航链接
 
 在每个文档中添加导航链接，引导用户在文档之间流畅跳转。
+只能链接生成的其他文档，不能链接到工作目录中的 markdown 文件，文档发布后会导致无法访问。
 
 ### 文档开头导航
 
@@ -88,9 +89,9 @@ find . -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.g
 - **概念解释** → 概念图（概念关系、层次结构）
 - **数据结构** → 数据模型图（类图、ER 图）
 
-**B. 应用截图（优先使用已有）**
+**B. 应用截图（必须使用已有）**
 
-以下类型可以优先使用工作区中的已有截图：
+以下类型必须使用工作区中的已有截图，因为必须使用真实的应用截图：
 
 - **界面介绍** → UI 截图
 - **操作步骤** → 操作演示截图
@@ -104,7 +105,7 @@ find . -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.g
    - 概念说明：至少 1 个概念图
    - 数据模型：至少 1 个数据结构图
 
-2. **用户指南必须包含应用截图**：
+2. **用户指南需要包含应用截图**：
    - 操作指南：每个主要操作步骤至少 1 张截图
    - 功能介绍：每个功能至少 1 张界面截图
 
@@ -116,10 +117,11 @@ find . -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.g
 
 **对于应用截图（B 类）：**
 
-1. 从前置准备的查找结果中匹配图片
+1. 只能从前置准备的查找结果中匹配图片
 2. 根据文件名判断用途（如 login.png、dashboard.png、settings.png）
 3. 使用层级对照表计算相对路径
 4. 引用图片：`![截图说明](../../../assets/screenshot.png)`
+5. 如果仓库未提供相关截图，可以不展示
 
 **对于技术图表（A 类）：**
 
@@ -139,23 +141,25 @@ find . -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.g
 2. 工作区中没有对应的技术图表
 3. 即使有应用截图，也需要生成技术图表 slot
 
-AFS Image Slot Instructions
+AFS Image Slot Instructions 
 
-Use an AFS image slot only when you want to generate a new image.
+Use an AFS image slot only when you want the framework to generate a new image.
 
 Slot format (single line):
-<!-- afs:image id="img-001" desc="..." -->
-Optional stable intent key:
-<!-- afs:image id="img-001" key="afs-context-flow" desc="..." -->
+<!-- afs:image id="architecture-overview" desc="..." -->
+
+Optional stable intent key (for reuse across edits or documents):
+<!-- afs:image id="architecture-overview" key="aigne-cli-architecture" desc="..." -->
 
 Rules:
-
 - Insert a slot only for new image generation.
-  If the source already provides an image (existing URL/path/asset), reference it normally; do not create a slot.
-- id is required, unique in the same document, and must match: [a-z0-9._-]+
-  Use sequential ids: img-001, img-002, ...
+  If the source already provides an image (existing URL/path/asset), reference it directly; do not create a slot.
+- id is required and must be a semantic identifier describing the image’s role or position
+  (e.g. architecture-overview, core-flow, deployment-banner).
+  It must be unique in the same document and match: [a-z0-9._-]+.
 - desc is required, concise, double-quoted, and must not contain ".
-- key is optional; use a short stable token ([a-z0-9._-]+) when you want stable reuse across edits/sections.
+  It describes what the image should depict.
+- key is optional. Use a short, stable token ([a-z0-9._-]+) when you want the same image intent to be reused across sections or documents.
 
 ### 图片使用检查清单
 
