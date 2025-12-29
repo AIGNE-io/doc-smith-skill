@@ -1,8 +1,11 @@
 #!/usr/bin/env aigne
 
 model: anthropic/claude-sonnet-4-5
+image_model:
+  model: google/gemini-3-pro-image-preview
 agents:
   - doc-smith.yaml
+  - agents/preload-i18n.mjs
 
 cli:
   agents:
