@@ -9,7 +9,7 @@ import {
   ComponentNotFoundError,
   getComponentMountPoint,
   InvalidBlockletError,
-} from "./blocklet.mjs";
+} from "./http.mjs";
 import {
   BLOCKLET_ADD_COMPONENT_DOCS,
   CLOUD_SERVICE_URL_PROD,

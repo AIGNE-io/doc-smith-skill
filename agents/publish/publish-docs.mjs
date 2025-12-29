@@ -9,23 +9,19 @@ import {
   getAccessToken,
   getCachedAccessToken,
   getDiscussKitMountPoint,
-} from "../utils/auth-utils.mjs";
+} from "../../utils/auth.mjs";
 import {
   CLOUD_SERVICE_URL_PROD,
   DISCUSS_KIT_STORE_URL,
   DOC_SMITH_DIR,
   TMP_DIR,
   TMP_DOCS_DIR,
-} from "../utils/constants.mjs";
-import { deploy } from "../utils/deploy.mjs";
-import {
-  loadConfigFromFile,
-  saveValueToConfig,
-  ensureTmpDir,
-  isRemoteFile,
-  getGithubRepoUrl,
-} from "../utils/config-utils.mjs";
-import updateBranding from "../utils/update-branding.mjs";
+} from "../../utils/constants.mjs";
+import { deploy } from "../../utils/deploy.mjs";
+import { loadConfigFromFile, saveValueToConfig } from "../../utils/config.mjs";
+import { ensureTmpDir } from "../../utils/files.mjs";
+import { getGithubRepoUrl } from "../../utils/git.mjs";
+import updateBranding from "../../utils/branding.mjs";
 
 const BASE_URL = process.env.DOC_SMITH_BASE_URL || CLOUD_SERVICE_URL_PROD;
 

@@ -8,7 +8,6 @@ skills:
   - url: ./init-config.mjs
     default_input:
       skipIfExists: true
-      checkOnly: true
   - url: ./check-docs.mjs
   - url: ./load-structure.mjs
   - url: ./save-sidebar.mjs

@@ -5,9 +5,9 @@ import path from "node:path";
 import pLimit from "p-limit";
 import pRetry from "p-retry";
 
-import { getComponentMountPoint } from "./blocklet.mjs";
+import { getComponentMountPoint } from "./http.mjs";
 import { DISCUSS_KIT_DID, MEDIA_KIT_DID } from "./constants.mjs";
-import { getMimeType } from "./file-utils.mjs";
+import { getMimeType } from "./files.mjs";
 
 /**
  * Perform single file upload

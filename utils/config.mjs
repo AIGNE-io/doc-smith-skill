@@ -1,10 +1,7 @@
-import { execSync } from "node:child_process";
 import { existsSync, mkdirSync } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { join } from "node:path";
 import { parse, stringify as yamlStringify } from "yaml";
-import { SUPPORTED_LANGUAGES, DOC_SMITH_DIR, TMP_DIR } from "./constants.mjs";
 
 /**
  * Load config from config.yaml file
@@ -168,156 +165,10 @@ export async function saveValueToConfig(key, value, comment) {
 }
 
 /**
- * Get GitHub repository URL
- * @returns {string} - GitHub repository URL or empty string
- */
-export function getGithubRepoUrl() {
-  try {
-    const gitRemote = execSync("git remote get-url origin", {
-      encoding: "utf8",
-      stdio: ["pipe", "pipe", "ignore"],
-    }).trim();
-
-    if (gitRemote.includes("github.com")) {
-      return gitRemote;
-    }
-
-    return "";
-  } catch {
-    return "";
-  }
-}
-
-/**
- * Get GitHub repository information
- * @param {string} repoUrl - The repository URL
- * @returns {Promise<Object>} - Repository information
- */
-export async function getGitHubRepoInfo(repoUrl) {
-  try {
-    const match = repoUrl.match(/github\.com[/:]([^/]+)\/([^/]+?)(?:\.git)?$/);
-    if (!match) return null;
-
-    const [, owner, repo] = match;
-    const apiUrl = `https://api.github.com/repos/${owner}/${repo}`;
-
-    const response = await fetch(apiUrl);
-
-    if (!response.ok) {
-      console.warn("Failed to fetch GitHub repository info:", repoUrl, response.statusText);
-      return null;
-    }
-
-    const data = await response.json();
-    return {
-      name: data.name,
-      description: data.description || "",
-      icon: data.owner?.avatar_url || "",
-    };
-  } catch (error) {
-    console.warn("Failed to fetch GitHub repository info:", error.message);
-    return null;
-  }
-}
-
-/**
- * Get project information from Git or directory
- * @returns {Promise<Object>} - Project information
- */
-export async function getProjectInfo() {
-  let repoInfo = null;
-  let defaultName = path.basename(process.cwd());
-  let defaultDescription = "";
-  let defaultIcon = "";
-  let fromGitHub = false;
-
-  try {
-    const gitRemote = execSync("git remote get-url origin", {
-      encoding: "utf8",
-      stdio: ["pipe", "pipe", "ignore"],
-    }).trim();
-
-    const repoName = gitRemote.split("/").pop().replace(".git", "");
-    defaultName = repoName;
-
-    if (gitRemote.includes("github.com")) {
-      repoInfo = await getGitHubRepoInfo(gitRemote);
-      if (repoInfo) {
-        defaultDescription = repoInfo.description;
-        defaultIcon = repoInfo.icon;
-        fromGitHub = true;
-      }
-    }
-  } catch (_error) {
-    console.warn("No git repository found, using current directory name");
-  }
-
-  return {
-    name: defaultName,
-    description: defaultDescription,
-    icon: defaultIcon,
-    fromGitHub,
-  };
-}
-
-/**
- * Detect system language
- * @returns {string} - Language code (e.g., 'en', 'zh')
- */
-export function detectSystemLanguage() {
-  try {
-    let systemLocale = null;
-
-    systemLocale = process.env.LANG || process.env.LANGUAGE || process.env.LC_ALL;
-
-    if (!systemLocale) {
-      try {
-        systemLocale = Intl.DateTimeFormat().resolvedOptions().locale;
-      } catch (_error) {
-        // Intl API failed
-      }
-    }
-
-    if (!systemLocale) {
-      return "en";
-    }
-
-    const languageCode = systemLocale.split(/[_.-]/)[0].toLowerCase();
-    const supportedCode = SUPPORTED_LANGUAGES.find((lang) => lang.code === languageCode);
-
-    return supportedCode ? supportedCode.code : "en";
-  } catch (error) {
-    console.warn("Failed to detect system language:", error.message);
-    return "en";
-  }
-}
-
-/**
  * Generate configuration YAML content
  * @param {Object} input - Input configuration object
  * @returns {string} - YAML configuration string
  */
-/**
- * Ensure temporary directory exists
- * @returns {Promise<void>}
- */
-export async function ensureTmpDir() {
-  const { existsSync, mkdirSync } = await import("node:fs");
-  const tmpDir = join(process.cwd(), DOC_SMITH_DIR, TMP_DIR);
-  if (!existsSync(tmpDir)) {
-    mkdirSync(tmpDir, { recursive: true });
-  }
-}
-
-/**
- * Check if a file is a remote URL
- * @param {string} file - File path or URL
- * @returns {boolean}
- */
-export function isRemoteFile(file) {
-  return file && (file.startsWith("http://") || file.startsWith("https://"));
-}
-
 export function generateConfigYAML(input) {
   const config = {
     projectName: (input.projectName || "").trim(),

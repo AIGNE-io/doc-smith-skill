@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { getMainLanguageFiles } from "../utils/docs-utils.mjs";
+import { getMainLanguageFiles } from "../../utils/docs.mjs";
 
 /**
  * Check if documents exist in the docs directory

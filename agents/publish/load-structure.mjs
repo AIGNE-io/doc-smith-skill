@@ -1,5 +1,5 @@
 import { join } from "node:path";
-import { loadDocumentStructure } from "../utils/docs-utils.mjs";
+import { loadDocumentStructure } from "../../utils/docs.mjs";
 
 /**
  * Load document structure from output directory

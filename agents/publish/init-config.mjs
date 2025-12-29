@@ -1,12 +1,8 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import chalk from "chalk";
-import {
-  loadConfigFromFile,
-  getProjectInfo,
-  detectSystemLanguage,
-  generateConfigYAML,
-} from "../utils/config-utils.mjs";
+import { loadConfigFromFile, generateConfigYAML } from "../../utils/config.mjs";
+import { getProjectInfo, detectSystemLanguage } from "../../utils/project.mjs";
 
 /**
  * Initialize configuration for publishing

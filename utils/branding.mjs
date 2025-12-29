@@ -2,14 +2,13 @@ import { stat } from "node:fs/promises";
 import chalk from "chalk";
 import { joinURL } from "ufo";
 
-import { getComponentInfoWithMountPoint } from "./blocklet.mjs";
+import { getComponentInfoWithMountPoint, requestWithAuthToken } from "./http.mjs";
 import {
   CLOUD_SERVICE_URL_PROD,
   CLOUD_SERVICE_URL_STAGING,
   DISCUSS_KIT_DID,
 } from "./constants.mjs";
-import { requestWithAuthToken } from "./request.mjs";
-import { uploadFiles } from "./upload-files.mjs";
+import { uploadFiles } from "./upload.mjs";
 
 export default async function updateBranding({ appUrl, projectInfo, accessToken, finalPath }) {
   try {

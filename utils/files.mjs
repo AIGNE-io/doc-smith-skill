@@ -1,4 +1,7 @@
+import { existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
+import { join } from "node:path";
+import { DOC_SMITH_DIR, TMP_DIR } from "./constants.mjs";
 
 // Shared extension → MIME type mapping table
 const EXT_TO_MIME = {
@@ -50,4 +53,24 @@ const EXT_TO_MIME = {
 export function getMimeType(filePath) {
   const ext = path.extname(filePath || "").toLowerCase();
   return EXT_TO_MIME[ext] || "application/octet-stream";
+}
+
+/**
+ * Ensure temporary directory exists
+ * @returns {Promise<void>}
+ */
+export async function ensureTmpDir() {
+  const tmpDir = join(process.cwd(), DOC_SMITH_DIR, TMP_DIR);
+  if (!existsSync(tmpDir)) {
+    mkdirSync(tmpDir, { recursive: true });
+  }
+}
+
+/**
+ * Check if a file is a remote URL
+ * @param {string} file - File path or URL
+ * @returns {boolean}
+ */
+export function isRemoteFile(file) {
+  return file && (file.startsWith("http://") || file.startsWith("https://"));
 }

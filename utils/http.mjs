@@ -102,3 +102,21 @@ export async function getComponentInfoWithMountPoint(appUrl, did) {
     mountPoint: component.mountPoint,
   };
 }
+
+/**
+ * Perform HTTP request with authentication token
+ * @param {string} url - Request URL
+ * @param {Object} options - Fetch options
+ * @param {string} authToken - Authentication token
+ * @returns {Promise<Object>} Response JSON
+ */
+export async function requestWithAuthToken(url, options, authToken) {
+  if (!authToken) {
+    console.error("No authentication token provided");
+  }
+  const response = await fetch(url, {
+    ...options,
+    headers: { ...options.headers, Authorization: `Bearer ${authToken}` },
+  });
+  return response.json();
+}

@@ -1,6 +1,6 @@
 import { join } from "node:path";
 import fs from "fs-extra";
-import { buildDocumentTree } from "../utils/docs-utils.mjs";
+import { buildDocumentTree } from "../../utils/docs.mjs";
 
 export default async function saveSidebar({
   documentStructure,
