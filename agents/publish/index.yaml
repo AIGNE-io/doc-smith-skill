@@ -9,8 +9,6 @@ skills:
     default_input:
       skipIfExists: true
   - url: ./check-docs.mjs
-  - url: ./load-structure.mjs
-  - url: ./save-sidebar.mjs
   - url: ./publish-docs.mjs
 input_schema:
   type: object

@@ -148,6 +148,46 @@ export function buildDocumentTree(documentStructure) {
 }
 
 /**
+ * Recursively generate sidebar text from document tree nodes
+ * @param {Array} nodes - Array of tree nodes
+ * @param {string} indent - Current indentation level
+ * @returns {string} - Formatted sidebar text
+ */
+function walk(nodes, indent = "") {
+  let out = "";
+  for (const node of nodes) {
+    const realIndent = node.parentId === null ? "" : indent;
+
+    // If path already ends with .md, use it directly
+    let linkPath;
+    if (node.path.endsWith(".md")) {
+      linkPath = node.path.startsWith("/") ? node.path : `/${node.path}`;
+    } else {
+      // Otherwise, convert to flattened file name
+      const relPath = node.path.replace(/^\//, "");
+      linkPath = `/${relPath.split("/").join("-")}.md`;
+    }
+
+    out += `${realIndent}* [${node.title}](${linkPath})\n`;
+
+    if (node.children && node.children.length > 0) {
+      out += walk(node.children, `${indent}  `);
+    }
+  }
+  return out;
+}
+
+/**
+ * Generate sidebar markdown from document structure
+ * @param {Array} documentStructure - Flat document structure array
+ * @returns {string} - Formatted sidebar markdown
+ */
+export function generateSidebar(documentStructure) {
+  const { rootNodes } = buildDocumentTree(documentStructure);
+  return walk(rootNodes).replace(/\n+$/, "");
+}
+
+/**
  * Get main language files from docs directory
  * @param {string} docsDir - Documentation directory
  * @param {string} locale - Main language locale
