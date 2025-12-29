@@ -3,7 +3,7 @@ name: publish
 alias:
   - pub
   - p
-description: 发布文档到在线平台
+description: Publish DocSmith generated documentation to the online platform
 skills:
   - url: ./init-config.mjs
     default_input:
@@ -15,7 +15,4 @@ input_schema:
   properties:
     appUrl:
       type: string
-      description: 网站 URL（可选 - 留空则交互式设置）
-    with-branding:
-      type: boolean
-      description: 更新网站品牌信息（标题、描述、Logo）
+      description: Website URL (optional - leave blank for interactive setup)

@@ -13,6 +13,7 @@ history_config:
 input_key: message
 skills:
   - type: "@aigne/agent-library/ask-user-question"
+  - ./agents/publish/index.yaml
 
 afs:
   modules:
