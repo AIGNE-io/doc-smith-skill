@@ -69,16 +69,23 @@ export async function loadDocumentStructure(outputDir) {
       if (structureContent?.trim()) {
         try {
           const trimmedContent = structureContent.trim();
-          if (trimmedContent.startsWith("[") || trimmedContent.startsWith("{")) {
+          if (
+            trimmedContent.startsWith("[") ||
+            trimmedContent.startsWith("{")
+          ) {
             const parsed = JSON.parse(structureContent);
             if (Array.isArray(parsed)) {
               return parsed;
             }
           } else {
-            console.warn("structure-plan.json contains non-JSON content, skipping parse");
+            console.warn(
+              "structure-plan.json contains non-JSON content, skipping parse"
+            );
           }
         } catch (parseError) {
-          console.error(`Failed to parse structure-plan.json: ${parseError.message}`);
+          console.error(
+            `Failed to parse structure-plan.json: ${parseError.message}`
+          );
         }
       }
     }
@@ -102,13 +109,17 @@ export async function loadDocumentStructure(outputDir) {
             return convertYamlToStructure(parsed);
           }
         } catch (parseError) {
-          console.error(`Failed to parse document-structure.yaml: ${parseError.message}`);
+          console.error(
+            `Failed to parse document-structure.yaml: ${parseError.message}`
+          );
         }
       }
     }
   } catch (readError) {
     if (readError.code !== "ENOENT") {
-      console.warn(`Error reading document-structure.yaml: ${readError.message}`);
+      console.warn(
+        `Error reading document-structure.yaml: ${readError.message}`
+      );
     }
   }
 
@@ -190,11 +201,9 @@ export function generateSidebar(documentStructure) {
 /**
  * Get main language files from docs directory
  * @param {string} docsDir - Documentation directory
- * @param {string} locale - Main language locale
- * @param {Array} documentStructure - Document structure (optional)
  * @returns {Promise<Array>} - Array of markdown files
  */
-export async function getMainLanguageFiles(docsDir, locale, documentStructure = null) {
+export async function getMainLanguageFiles(docsDir) {
   try {
     await access(docsDir);
   } catch (error) {

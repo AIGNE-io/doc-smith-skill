@@ -28,7 +28,6 @@ const BASE_URL = process.env.DOC_SMITH_BASE_URL || CLOUD_SERVICE_URL_PROD;
 
 export default async function publishDocs(
   {
-    docsDir: rawDocsDir,
     appUrl,
     boardId,
     projectName,
@@ -39,6 +38,7 @@ export default async function publishDocs(
   },
   options
 ) {
+  const rawDocsDir = "./docs";
   let message;
   let shouldWithBranding = withBrandingOption || false;
 
