@@ -76,21 +76,12 @@ function executeCommand(command, args = []) {
     // 构建完整命令用于显示和日志
     const fullCommand = [command, ...args].join(" ");
 
-    // 打印实际执行的命令,方便调试
-    console.log(`[bash-executor] 执行命令: ${fullCommand}`);
-    console.log(`[bash-executor] 命令: "${command}"`);
-    console.log(`[bash-executor] 参数:`, JSON.stringify(args, null, 2));
-
     // 使用 spawnSync 可以同时捕获 stdout 和 stderr
     const result = spawnSync(command, args, {
       encoding: "utf-8",
       maxBuffer: 10 * 1024 * 1024, // 10MB
       timeout: 60000, // 60秒超时
     });
-
-    console.log(
-      `[bash-executor] 退出码: ${result.status}, 错误: ${result.error || "无"}`
-    );
 
     // 检查是否执行成功
     if (result.status === 0 && !result.error) {
@@ -220,7 +211,8 @@ executeSafeShellCommands.input_schema = {
           },
           args: {
             type: "array",
-            description: "Git 子命令和参数列表,第一个参数必须是支持的子命令(init/clone/config/status/log/diff/branch/show/add/commit/fetch/pull/submodule)",
+            description:
+              "Git 子命令和参数列表,第一个参数必须是支持的子命令(init/clone/config/status/log/diff/branch/show/add/commit/fetch/pull/submodule)",
             items: {
               type: "string",
             },
