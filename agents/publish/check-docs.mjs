@@ -9,16 +9,12 @@ import { getMainLanguageFiles } from "../../utils/docs.mjs";
  * @param {Array} params.documentStructure - Document structure
  * @returns {Promise<Object>} - Result object
  */
-export default async function checkDocs({ docsDir, locale, documentStructure }) {
-  const mainLanguageFiles = await getMainLanguageFiles(docsDir, locale, documentStructure);
+export default async function checkDocs({ docsDir = "./docs" }) {
+  const mainLanguageFiles = await getMainLanguageFiles(docsDir);
 
   if (mainLanguageFiles.length === 0) {
-    console.log(
-      `⚠️  No documents found in the docs directory.`,
-    );
-    console.log(
-      `💡 Please generate documentation first before publishing.`,
-    );
+    console.log(`⚠️  No documents found in the docs directory.`);
+    console.log(`💡 Please generate documentation first before publishing.`);
     process.exit(0);
   }
 
